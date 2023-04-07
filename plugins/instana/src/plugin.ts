@@ -18,6 +18,7 @@ import {
   createPlugin,
   createRoutableExtension,
   discoveryApiRef,
+  fetchApiRef,
 } from '@backstage/core-plugin-api';
 import { InstanaBackendClient } from './api/InstanaBackendClient';
 import { instanaApiRef } from './api/types';
@@ -30,8 +31,10 @@ export const instanaPlugin = createPlugin({
       api: instanaApiRef,
       deps: {
         discoveryApi: discoveryApiRef,
+        fetchApi: fetchApiRef,
       },
-      factory: ({ discoveryApi }) => new InstanaBackendClient({ discoveryApi }),
+      factory: ({ discoveryApi, fetchApi }) =>
+        new InstanaBackendClient({ discoveryApi, fetchApi }),
     }),
   ],
   routes: {
