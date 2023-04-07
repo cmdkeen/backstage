@@ -14,14 +14,26 @@
  * limitations under the License.
  */
 import {
+  createApiFactory,
   createPlugin,
   createRoutableExtension,
+  discoveryApiRef,
 } from '@backstage/core-plugin-api';
-
+import { InstanaBackendClient } from './api/InstanaBackendClient';
+import { instanaApiRef } from './api/types';
 import { rootRouteRef } from './routes';
 
 export const instanaPlugin = createPlugin({
   id: 'instana',
+  apis: [
+    createApiFactory({
+      api: instanaApiRef,
+      deps: {
+        discoveryApi: discoveryApiRef,
+      },
+      factory: ({ discoveryApi }) => new InstanaBackendClient({ discoveryApi }),
+    }),
+  ],
   routes: {
     root: rootRouteRef,
   },
