@@ -7012,7 +7012,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@backstage/plugin-instana-backend@^0.0.0, @backstage/plugin-instana-backend@workspace:plugins/instana-backend":
+"@backstage/plugin-instana-backend@workspace:^, @backstage/plugin-instana-backend@workspace:plugins/instana-backend":
   version: 0.0.0-use.local
   resolution: "@backstage/plugin-instana-backend@workspace:plugins/instana-backend"
   dependencies:
@@ -7031,7 +7031,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@backstage/plugin-instana@^0.0.0, @backstage/plugin-instana@workspace:plugins/instana":
+"@backstage/plugin-instana@workspace:^, @backstage/plugin-instana@workspace:plugins/instana":
   version: 0.0.0-use.local
   resolution: "@backstage/plugin-instana@workspace:plugins/instana"
   dependencies:
@@ -23540,8 +23540,7 @@ __metadata:
     "@backstage/plugin-gocd": "workspace:^"
     "@backstage/plugin-graphiql": "workspace:^"
     "@backstage/plugin-home": "workspace:^"
-    "@backstage/plugin-instana": ^0.0.0
-    "@backstage/plugin-instana-backend": ^0.0.0
+    "@backstage/plugin-instana": "workspace:^"
     "@backstage/plugin-jenkins": "workspace:^"
     "@backstage/plugin-kafka": "workspace:^"
     "@backstage/plugin-kubernetes": "workspace:^"
@@ -23659,6 +23658,7 @@ __metadata:
     "@backstage/plugin-events-node": "workspace:^"
     "@backstage/plugin-explore-backend": "workspace:^"
     "@backstage/plugin-graphql-backend": "workspace:^"
+    "@backstage/plugin-instana-backend": "workspace:^"
     "@backstage/plugin-jenkins-backend": "workspace:^"
     "@backstage/plugin-kafka-backend": "workspace:^"
     "@backstage/plugin-kubernetes-backend": "workspace:^"

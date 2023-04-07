@@ -167,6 +167,8 @@ import {
   EntityLinguistCard,
 } from '@backstage/plugin-linguist';
 
+import {} from '@backstage/plugin-instana';
+
 const customEntityFilterKind = ['Component', 'API', 'System'];
 
 const EntityLayoutWrapper = (props: { children?: ReactNode }) => {
