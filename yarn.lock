@@ -7035,6 +7035,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@backstage/plugin-instana@workspace:plugins/instana"
   dependencies:
+    "@backstage/catalog-model": "workspace:^"
     "@backstage/cli": "workspace:^"
     "@backstage/core-app-api": "workspace:^"
     "@backstage/core-components": "workspace:^"

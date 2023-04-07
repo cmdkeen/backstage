@@ -14,14 +14,45 @@
  * limitations under the License.
  */
 import React from 'react';
+import { Entity } from '@backstage/catalog-model';
+import { EntityProvider } from '@backstage/plugin-catalog-react';
 import { createDevApp } from '@backstage/dev-utils';
+import { TestApiProvider } from '@backstage/test-utils';
 import { instanaPlugin, InstanaPage } from '../src/plugin';
+import { InstanaApi, instanaApiRef } from '../src';
+
+const mockEntity: Entity = {
+  apiVersion: 'backstage.io/v1alpha1',
+  kind: 'Component',
+  metadata: {
+    name: 'backstage',
+    description: 'backstage.io',
+    annotations: {},
+  },
+  spec: {
+    lifecycle: 'production',
+    type: 'service',
+    owner: 'user:guest',
+  },
+};
+
+class MockInstanaClient implements InstanaApi {
+  async getHealth(): Promise<{ status: string }> {
+    return { status: 'ok' };
+  }
+}
 
 createDevApp()
   .registerPlugin(instanaPlugin)
   .addPage({
-    element: <InstanaPage />,
-    title: 'Root Page',
-    path: '/instana',
+    path: '/fixture-1',
+    title: 'Fixture-1',
+    element: (
+      <TestApiProvider apis={[[instanaApiRef, new MockInstanaClient()]]}>
+        <EntityProvider entity={mockEntity}>
+          <InstanaPage />
+        </EntityProvider>
+      </TestApiProvider>
+    ),
   })
   .render();

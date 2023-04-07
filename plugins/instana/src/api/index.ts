@@ -13,5 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { instanaPlugin, InstanaPage } from './plugin';
-export * from './api';
+export type { InstanaApi } from './types';
+export { instanaApiRef } from './types';

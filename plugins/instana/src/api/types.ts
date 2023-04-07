@@ -13,5 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export { instanaPlugin, InstanaPage } from './plugin';
-export * from './api';
+import { createApiRef } from '@backstage/core-plugin-api';
+
+export interface InstanaApi {
+  getHealth(): Promise<{ status: string }>;
+}
+
+export const instanaApiRef = createApiRef<InstanaApi>({
+  id: 'plugin.instana.service',
+});
