@@ -15,8 +15,21 @@
  */
 import React from 'react';
 import { useEntity } from '@backstage/plugin-catalog-react';
+import { useInstanaObjects } from '../../hooks/useInstanaObjects';
 
 export const ExampleComponent = () => {
   const { entity } = useEntity();
-  return <div>Hello from {entity.metadata.name}</div>;
+  const { error, loading, status } = useInstanaObjects();
+  if (loading) {
+    return <div>Loading</div>;
+  }
+  if (error) {
+    return <div>Error</div>;
+  }
+  return (
+    <>
+      <div>Hello {entity.metadata.name}</div>
+      <div>Status: {status}</div>
+    </>
+  );
 };
