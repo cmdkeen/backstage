@@ -13,25 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {
-  createPlugin,
-  createRoutableExtension,
-} from '@backstage/core-plugin-api';
+import { errorHandler } from '@backstage/backend-common';
+import express from 'express';
+import Router from 'express-promise-router';
+import { Logger } from 'winston';
 
-import { rootRouteRef } from './routes';
+export interface RouterOptions {
+  logger: Logger;
+}
 
-export const instanaBackendPlugin = createPlugin({
-  id: 'instana-backend',
-  routes: {
-    root: rootRouteRef,
-  },
-});
+export async function createRouter(
+  options: RouterOptions,
+): Promise<express.Router> {
+  const { logger } = options;
 
-export const InstanaBackendPage = instanaBackendPlugin.provide(
-  createRoutableExtension({
-    name: 'InstanaBackendPage',
-    component: () =>
-      import('./components/ExampleComponent').then(m => m.ExampleComponent),
-    mountPoint: rootRouteRef,
-  }),
-);
+  const router = Router();
+  router.use(express.json());
+
+  router.get('/health', (_, response) => {
+    logger.info('PONG!');
+    response.json({ status: 'ok' });
+  });
+  router.use(errorHandler());
+  return router;
+}
