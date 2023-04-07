@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 import React from 'react';
+import { useEntity } from '@backstage/plugin-catalog-react';
 
 export const ExampleComponent = () => {
-  return <div>Hello World</div>;
+  const { entity } = useEntity();
+  return <div>Hello from {entity.metadata.name}</div>;
 };

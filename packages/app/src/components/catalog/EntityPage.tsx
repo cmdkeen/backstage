@@ -167,7 +167,7 @@ import {
   EntityLinguistCard,
 } from '@backstage/plugin-linguist';
 
-import {} from '@backstage/plugin-instana';
+import { InstanaPage } from '@backstage/plugin-instana';
 
 const customEntityFilterKind = ['Component', 'API', 'System'];
 
@@ -541,6 +541,10 @@ const serviceEntityPage = (
 
     <EntityLayout.Route path="/feedback" title="Feedback">
       <EntityFeedbackResponseContent />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/instana" title="Instana">
+      <InstanaPage />
     </EntityLayout.Route>
   </EntityLayoutWrapper>
 );
