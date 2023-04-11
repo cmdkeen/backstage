@@ -36,29 +36,33 @@ export async function createRouter(
 
   router.get('/applications/:applicationId', async (req, res) => {
     const { applicationId } = req.params;
-    const metrics = {
+    const data = {
       applicationId: applicationId,
       windowSize: 84600000,
-      'calls.per_second': 5.831666666666667,
-      'latency.mean': 5.171477565018577,
-      'latency.p50': 0.0,
-      'latency.p90': 0.0,
-      'latency.p99': 38.0,
+      data: {
+        'calls.per_second': 5.831666666666667,
+        'latency.mean': 5.171477565018577,
+        'latency.p50': 0.0,
+        'latency.p90': 0.0,
+        'latency.p99': 38.0,
+      },
     };
-    res.json(metrics);
+    res.json(data);
   });
 
   router.get('/websites/:websiteId', async (req, res) => {
     const { websiteId } = req.params;
-    const metrics = {
+    const data = {
       websiteId: websiteId,
       windowSize: 84600000,
-      'onLoadTime.p90': 949.0,
-      'onLoadTime.p50': 415.0,
-      'firstContentfulPaintTime.p90': 539.0,
-      'firstContentfulPaintTime.p50': 302.0,
+      metrics: {
+        'uniqueUsers.distinct_count': 949.0,
+        'uniqueSessions.distinct_count': 415.0,
+        'http5xx.sum': 539.0,
+        'responseTime.p90': 302.0,
+      },
     };
-    res.json(metrics);
+    res.json(data);
   });
 
   router.use(errorHandler());
