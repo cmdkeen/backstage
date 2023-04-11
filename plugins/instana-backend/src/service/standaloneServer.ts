@@ -17,6 +17,7 @@ import { createServiceBuilder } from '@backstage/backend-common';
 import { Server } from 'http';
 import { Logger } from 'winston';
 import { createRouter } from './router';
+import { ConfigReader } from '@backstage/config';
 
 export interface ServerOptions {
   port: number;
@@ -28,8 +29,15 @@ export async function startStandaloneServer(
   options: ServerOptions,
 ): Promise<Server> {
   const logger = options.logger.child({ service: 'instana-backend' });
+  const config = new ConfigReader({
+    instana: {
+      baseUrl: 'https://YOUR_INSTANCE.instana.io',
+      token: 'API_TOKEN',
+    },
+  });
   logger.debug('Starting application server...');
   const router = await createRouter({
+    config,
     logger,
   });
 

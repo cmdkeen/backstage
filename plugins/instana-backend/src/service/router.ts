@@ -18,6 +18,8 @@ import { Config } from '@backstage/config';
 import express from 'express';
 import Router from 'express-promise-router';
 import { Logger } from 'winston';
+import { InstanaClient } from '../api';
+import { getInstanaConfig } from '../config';
 
 export interface RouterOptions {
   logger: Logger;
@@ -27,6 +29,9 @@ export interface RouterOptions {
 export async function createRouter(
   options: RouterOptions,
 ): Promise<express.Router> {
+  const instanaConfig = getInstanaConfig(options.config);
+  const instanaApi = new InstanaClient(instanaConfig, options.logger);
+
   const router = Router();
   router.use(express.json());
 
@@ -52,16 +57,7 @@ export async function createRouter(
 
   router.get('/websites/:websiteId', async (req, res) => {
     const { websiteId } = req.params;
-    const data = {
-      websiteId: websiteId,
-      windowSize: 84600000,
-      metrics: {
-        'uniqueUsers.distinct_count': 949.0,
-        'uniqueSessions.distinct_count': 415.0,
-        'http5xx.sum': 539.0,
-        'responseTime.p90': 302.0,
-      },
-    };
+    const data = await instanaApi.getWebsiteMetrics(websiteId);
     res.json(data);
   });
 
