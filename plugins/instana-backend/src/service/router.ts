@@ -41,17 +41,13 @@ export async function createRouter(
 
   router.get('/applications/:applicationId', async (req, res) => {
     const { applicationId } = req.params;
-    const data = {
-      applicationId: applicationId,
-      windowSize: 84600000,
-      data: {
-        'calls.per_second': 5.831666666666667,
-        'latency.mean': 5.171477565018577,
-        'latency.p50': 0.0,
-        'latency.p90': 0.0,
-        'latency.p99': 38.0,
-      },
-    };
+    const data = await instanaApi.getApplicationMetrics(applicationId);
+    res.json(data);
+  });
+
+  router.get('/services/:serviceId', async (req, res) => {
+    const { serviceId } = req.params;
+    const data = await instanaApi.getServiceMetrics(serviceId);
     res.json(data);
   });
 

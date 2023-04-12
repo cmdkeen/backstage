@@ -18,7 +18,18 @@ import { Logger } from 'winston';
 import { InstanaApi, InstanaMetrics } from './InstanaApi';
 import { NotImplementedError } from '@backstage/errors';
 
-interface InstanaResponse {
+interface InstanaApplicationPage {
+  application: {
+    label: string;
+  };
+  metrics: { [key: string]: number[][] };
+}
+
+interface InstanaApplicationResponse {
+  items: InstanaApplicationPage[];
+}
+
+interface InstanaWebsiteResponse {
   metrics: { [key: string]: number[][] };
 }
 
@@ -36,11 +47,69 @@ export class InstanaClient implements InstanaApi {
   public async getApplicationMetrics(
     applicationId: string,
   ): Promise<InstanaMetrics> {
-    throw new NotImplementedError();
+    const body = {
+      applicationId: applicationId,
+      metrics: [
+        { metric: 'calls', aggregation: 'PER_SECOND' },
+        { metric: 'latency', aggregation: 'MEAN' },
+        { metric: 'latency', aggregation: 'P50' },
+        { metric: 'latency', aggregation: 'P90' },
+        { metric: 'latency', aggregation: 'P99' },
+      ],
+      timeFrame: {
+        windowSize: this.windowSize,
+      },
+    };
+
+    const response = await this.callApi<InstanaApplicationResponse>(
+      'api/application-monitoring/metrics/applications',
+      body,
+    );
+    const responseMetrics = response.items[0].metrics;
+    const metrics = {};
+    Object.keys(responseMetrics).forEach((k, _) => {
+      metrics[k] = responseMetrics[k][0][1];
+    });
+
+    return {
+      entityId: applicationId,
+      entityType: 'application',
+      windowSize: this.windowSize,
+      metrics: metrics,
+    };
   }
 
   public async getServiceMetrics(serviceId: string): Promise<InstanaMetrics> {
-    throw new NotImplementedError();
+    const body = {
+      serviceId: serviceId,
+      metrics: [
+        { metric: 'calls', aggregation: 'PER_SECOND' },
+        { metric: 'latency', aggregation: 'MEAN' },
+        { metric: 'latency', aggregation: 'P50' },
+        { metric: 'latency', aggregation: 'P90' },
+        { metric: 'latency', aggregation: 'P99' },
+      ],
+      timeFrame: {
+        windowSize: this.windowSize,
+      },
+    };
+
+    const response = await this.callApi<InstanaApplicationResponse>(
+      'api/application-monitoring/metrics/services',
+      body,
+    );
+    const responseMetrics = response.items[0].metrics;
+    const metrics = {};
+    Object.keys(responseMetrics).forEach((k, _) => {
+      metrics[k] = responseMetrics[k][0][1];
+    });
+
+    return {
+      entityId: serviceId,
+      entityType: 'service',
+      windowSize: this.windowSize,
+      metrics: metrics,
+    };
   }
 
   public async getWebsiteMetrics(websiteId: string): Promise<InstanaMetrics> {
@@ -66,7 +135,7 @@ export class InstanaClient implements InstanaApi {
       },
     };
 
-    const response = await this.callApi<InstanaResponse>(
+    const response = await this.callApi<InstanaWebsiteResponse>(
       'api/website-monitoring/v2/metrics',
       body,
     );
