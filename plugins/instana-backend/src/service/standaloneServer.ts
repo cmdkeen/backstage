@@ -29,12 +29,7 @@ export async function startStandaloneServer(
   options: ServerOptions,
 ): Promise<Server> {
   const logger = options.logger.child({ service: 'instana-backend' });
-  const config = new ConfigReader({
-    instana: {
-      baseUrl: 'https://YOUR_INSTANCE.instana.io',
-      token: 'API_TOKEN',
-    },
-  });
+  const config = new ConfigReader({});
   logger.debug('Starting application server...');
   const router = await createRouter({
     config,
