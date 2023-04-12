@@ -23,5 +23,7 @@ export interface InstanaMetrics {
 export interface InstanaApi {
   getApplicationMetrics(applicationId: string): Promise<InstanaMetrics>;
 
+  getServiceMetrics(serviceId: string): Promise<InstanaMetrics>;
+
   getWebsiteMetrics(websiteId: string): Promise<InstanaMetrics>;
 }

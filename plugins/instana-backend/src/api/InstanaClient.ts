@@ -25,10 +25,12 @@ interface InstanaResponse {
 export class InstanaClient implements InstanaApi {
   private readonly config: InstanaConfig;
   private readonly logger: Logger;
+  private readonly windowSize: number;
 
   public constructor(config: InstanaConfig, logger: Logger) {
     this.config = config;
     this.logger = logger;
+    this.windowSize = config.windowSize || 86400000;
   }
 
   public async getApplicationMetrics(
@@ -37,8 +39,11 @@ export class InstanaClient implements InstanaApi {
     throw new NotImplementedError();
   }
 
+  public async getServiceMetrics(serviceId: string): Promise<InstanaMetrics> {
+    throw new NotImplementedError();
+  }
+
   public async getWebsiteMetrics(websiteId: string): Promise<InstanaMetrics> {
-    const windowSize = 86400000;
     // Instana API can only fetch 5 different metric+aggregation pairs at a time
     const body = {
       metrics: [
@@ -50,7 +55,7 @@ export class InstanaClient implements InstanaApi {
       ],
       type: 'PAGELOAD',
       timeFrame: {
-        windowSize: windowSize,
+        windowSize: this.windowSize,
       },
       tagFilterExpression: {
         type: 'TAG_FILTER',
@@ -73,7 +78,7 @@ export class InstanaClient implements InstanaApi {
     return {
       entityId: websiteId,
       entityType: 'website',
-      windowSize: windowSize,
+      windowSize: this.windowSize,
       metrics: metrics,
     };
   }

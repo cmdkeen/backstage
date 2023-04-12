@@ -18,5 +18,6 @@ export interface Config {
   instana?: {
     baseUrl: string;
     token: string;
+    windowSize?: number;
   };
 }

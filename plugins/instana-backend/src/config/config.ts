@@ -18,11 +18,13 @@ import { Config } from '@backstage/config';
 export interface InstanaConfig {
   baseUrl: string;
   token: string;
+  windowSize?: number;
 }
 
 export function getInstanaConfig(config: Config): InstanaConfig {
   return {
     baseUrl: config.getString('instana.baseUrl'),
     token: config.getString('instana.token'),
+    windowSize: config.getOptionalNumber('instana.windowSize'),
   };
 }
