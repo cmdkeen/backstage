@@ -20,6 +20,7 @@ import Router from 'express-promise-router';
 import { Logger } from 'winston';
 import { InstanaClient } from '../api';
 import { getInstanaConfig } from '../config';
+import { createFetchApi } from '@backstage/core-app-api';
 
 export interface RouterOptions {
   logger: Logger;
@@ -34,10 +35,6 @@ export async function createRouter(
 
   const router = Router();
   router.use(express.json());
-
-  router.get('/health', (_, response) => {
-    response.json({ status: 'ok' });
-  });
 
   router.get('/applications/:applicationId', async (req, res) => {
     const { applicationId } = req.params;

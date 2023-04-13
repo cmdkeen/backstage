@@ -16,7 +16,7 @@
 import { InstanaConfig } from '../config';
 import { Logger } from 'winston';
 import { InstanaApi, InstanaMetrics } from './InstanaApi';
-import { NotImplementedError } from '@backstage/errors';
+import { NotFoundError } from '@backstage/errors';
 
 interface InstanaApplicationPage {
   application: {
@@ -65,6 +65,11 @@ export class InstanaClient implements InstanaApi {
       'api/application-monitoring/metrics/applications',
       body,
     );
+
+    if (!response.items?.length) {
+      throw new NotFoundError(`No application found with id: ${applicationId}`);
+    }
+
     const responseMetrics = response.items[0].metrics;
     const metrics = {};
     Object.keys(responseMetrics).forEach((k, _) => {
@@ -98,6 +103,11 @@ export class InstanaClient implements InstanaApi {
       'api/application-monitoring/metrics/services',
       body,
     );
+
+    if (!response.items?.length) {
+      throw new NotFoundError(`No service found with id: ${serviceId}`);
+    }
+
     const responseMetrics = response.items[0].metrics;
     const metrics = {};
     Object.keys(responseMetrics).forEach((k, _) => {
@@ -139,6 +149,11 @@ export class InstanaClient implements InstanaApi {
       'api/website-monitoring/v2/metrics',
       body,
     );
+
+    if (!response.metrics['responseTime.p90']?.length) {
+      throw new NotFoundError(`No website found with id: ${websiteId}`);
+    }
+
     const metrics = {};
     Object.keys(response.metrics).forEach((k, _) => {
       metrics[k] = response.metrics[k][0][1];

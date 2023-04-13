@@ -24,6 +24,7 @@
   "dependencies": {
     "@backstage/backend-common": "workspace:^",
     "@backstage/config": "workspace:^",
+    "@backstage/core-app-api": "workspace:^",
     "@backstage/errors": "workspace:^",
     "@types/express": "*",
     "express": "^4.17.1",
@@ -33,6 +34,7 @@
     "yn": "^4.0.0"
   },
   "devDependencies": {
+    "@backstage/backend-test-utils": "workspace:^",
     "@backstage/cli": "workspace:^",
     "@types/supertest": "^2.0.8",
     "msw": "^1.0.0",
