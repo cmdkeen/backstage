@@ -16,7 +16,8 @@
 import { InstanaConfig } from '../config';
 import { Logger } from 'winston';
 import { InstanaApi, InstanaMetrics } from './InstanaApi';
-import { NotFoundError } from '@backstage/errors';
+import { NotFoundError, ResponseError } from '@backstage/errors';
+import fetch from 'node-fetch';
 
 interface InstanaApplicationPage {
   application: {
@@ -185,9 +186,6 @@ export class InstanaClient implements InstanaApi {
       return (await response.json()) as T;
     }
 
-    this.logger.warn(
-      `Instana response: ${response.status}: ${response.statusText}`,
-    );
-    throw new Error(response.statusText);
+    throw await ResponseError.fromResponse(response);
   }
 }

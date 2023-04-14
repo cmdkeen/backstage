@@ -7050,8 +7050,11 @@ __metadata:
   resolution: "@backstage/plugin-instana-backend@workspace:plugins/instana-backend"
   dependencies:
     "@backstage/backend-common": "workspace:^"
+    "@backstage/backend-test-utils": "workspace:^"
     "@backstage/cli": "workspace:^"
     "@backstage/config": "workspace:^"
+    "@backstage/core-app-api": "workspace:^"
+    "@backstage/errors": "workspace:^"
     "@types/express": "*"
     "@types/supertest": ^2.0.8
     express: ^4.17.1
